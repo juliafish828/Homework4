@@ -1,26 +1,50 @@
 ---
 title: "Homework 4 Fish"
-format: html
+format: pdf
 editor: visual
 ---
 
-## Quarto
+## Task 1: Conceptual Questions
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+It’s extremely important Create a list with the following questions:
+1. What is the purpose of the lapply() function? What is the equivalent purrr function?
+2. Suppose we have a list called my_list. Each element of the list is a numeric data frame (all columns
+are numeric). We want use lapply() to run the code cor(numeric_matrix, method = "kendall")
+on each element of the list. Write code to do this below! (I’m really trying to ask you how you specify
+method = "kendall" when calling lapply())
+3. What are two advantages of using purrr functions instead of the BaseR apply family?
+4. What is a side-effect function?
+5. Why can you name a variable sd in a function and not cause any issues with the sd function?
 
-## Running Code
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+### Question 1
 
-```{r}
-1 + 1
-```
+### Question 2
 
-You can add options to executable code like this
+### Question 3
 
-```{r}
-#| echo: false
-2 * 2
-```
+### Question 4
 
-The `echo: false` option disables the printing of code (only output is displayed).
+### Question 5
+
+## Task 2: Writing R Functions
+
+### Question 1
+
+### Question 2
+
+### Question 3
+
+### Question 4
+
+### Question 5
+
+### Question 6
+
+## Task 3: Querying an API and a Tidy-Style Function
+
+### Question 1
+
+### Question 2
+
+### Question 3
