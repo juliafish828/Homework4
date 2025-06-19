@@ -6,26 +6,29 @@ editor: visual
 
 ## Task 1: Conceptual Questions
 
-It’s extremely important Create a list with the following questions:
-1. What is the purpose of the lapply() function? What is the equivalent purrr function?
-2. Suppose we have a list called my_list. Each element of the list is a numeric data frame (all columns
-are numeric). We want use lapply() to run the code cor(numeric_matrix, method = "kendall")
-on each element of the list. Write code to do this below! (I’m really trying to ask you how you specify
-method = "kendall" when calling lapply())
-3. What are two advantages of using purrr functions instead of the BaseR apply family?
-4. What is a side-effect function?
-5. Why can you name a variable sd in a function and not cause any issues with the sd function?
-
-
 ### Question 1
 
-### Question 2
+* The purpose of  `lapply()` is to apply a function to a list and have the output of that function be in a list. The equivalent purrr function is `map2()`. The 2 signifies the output being in a list.
+
+### Guestion 2
+
+* To do this code and to specify `method = "kendall"`, we would need to run the following code" `lapply(my_list, cor, method = "kendall")`. This is due to the "..." in the `lapply` function.
 
 ### Question 3
 
+* The 2 advantages to using purrr functions instead of BaseR apply family are 
+
+3. What are two advantages of using purrr functions instead of the BaseR apply family?
+
 ### Question 4
 
+* A side effect function is a function that does somethign with the data but not to the data. For example, `plot()` makes a plot of the data that is input into the function, but nothing is actually **done** to the data as a result.
+
+
 ### Question 5
+
+* You can name a variable `sd` in a function and not cause issues with the `sd` function due to that variable being a local variable. This means that this variable is not actually assigned a value that remains there until changed; it is a variable that essentially acts as a storage holder of a value until the function is done running. That implies that the `sd` function will not be overwritten in this case.
+
 
 ## Task 2: Writing R Functions
 
