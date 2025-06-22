@@ -10,7 +10,7 @@ editor: visual
 
 * The purpose of  `lapply()` is to apply a function to a list and have the output of that function be in a list. The equivalent purrr function is `map2()`. The 2 signifies the output being in a list.
 
-### Guestion 2
+### Question 2
 
 * To do this code and to specify `method = "kendall"`, we would need to run the following code" `lapply(my_list, cor, method = "kendall")`. This is due to the "..." in the `lapply` function.
 
