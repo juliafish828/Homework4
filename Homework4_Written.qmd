@@ -22,7 +22,7 @@ editor: visual
 
 ### Question 4
 
-* A side effect function is a function that does somethign with the data but not to the data. For example, `plot()` makes a plot of the data that is input into the function, but nothing is actually **done** to the data as a result.
+* A side effect function is a function that does something with the data but does not continue outputting or "dragging down" the data. For example, `plot()` makes a plot of the data that is input into the function, but nothing is actually **done** to the data as a result. The data is also not able to be accessed through the `plot` function either (unless `invisible` is used).
 
 
 ### Question 5
@@ -128,32 +128,65 @@ Next, we will create a wrapper function to get either (or both) metrics with one
 ```{r}
 metrics <- function(resp, pred, calc = "both", ...){
   
+  if (!is.atomic(resp) | !is.numeric(resp)) {
+    stop("Input 'resp' must be a numeric, atomic vector.")
+  }
+  
+  if (!is.atomic(pred) | !is.numeric(pred)) {
+    stop("Input 'pred' must be a numeric, atomic vector.")
+  }
+  
+  rmse <- getRMSE(resp, pred, ...)
+  mae <- getMAE(resp, pred, ...)
+  
+  if (calc == "RMSE"){
+    return(c("RMSE" = rmse))
+  } else if (calc == "MAE"){
+    return(c("MAE" = mae))
+  } else if (calc == "both"){
+    return(c("RMSE" = rmse, "MAE" = mae))
+  }
 }
 ```
 
+### Question 6
 
-5. Let’s create a wrapper function that can be used to get either or both metrics returned with a single
-function call. Do not rewrite your above two functions, call them inside the wrapper function (we
-would call the getRMSE() and getMAE() functions helper functions). When returning your values,
-give them appropriate names.
-• The function should check that two numeric (atomic) vectors have been passed (consider is.vector(),
-is.atomic(), and is.numeric()). If not, a message should print and the function should exit.
-• The function should return both metrics by default and include names. The behavior should be able
-to be changed using a character string of metrics to find.
-6. Run the following code to create some response values and predictions.
+Lastly, we will run the following code once more to use the wrapper function written above.
+
+```{r}
 set.seed(10)
 n <- 100
 x <- runif(n)
 resp <- 3 + 10*x + rnorm(n)
 pred <- predict(lm(resp ~ x), data.frame(x))
-• Test your new function using this data. Call it once asking for each metric individually and once
-specifying both metrics
-• Repeat with replacing two of the response values with missing values (NA_real_).
-• Finally, test your function by passing it incorrect data (i.e. a data frame or something else instead of
-vectors)
+```
 
+Now, we will use these defined vectors to test the wrapper function. We will do this a few times to test all combinations of metrics we could want.
 
-### Question 6
+```{r}
+metrics(resp, pred, calc = "RMSE")
+metrics(resp, pred, calc = "MAE")
+metrics(resp, pred, calc = "both")
+```
+
+Now we will repeat this with the replacement of two of the response values with `NA_real_`.
+
+```{r}
+resp[1] <- resp[2] <- NA_real_
+
+metrics(resp, pred, calc = "both")
+metrics(resp, pred, calc = "both", na.rm = T)
+```
+
+Lastly, we will pas this function incorrect data to see if the appropriate error message occurs.
+
+```{r}
+#| error: true
+library(palmerpenguins)
+
+metrics(penguins, pred)
+metrics(resp, penguins)
+```
 
 ## Task 3: Querying an API and a Tidy-Style Function
 
