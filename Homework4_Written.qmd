@@ -4,7 +4,15 @@ format: pdf
 editor: visual
 ---
 
+```{r}
+#| include: false
+library(tidyverse)
+```
+
+
 ## Task 1: Conceptual Questions
+
+
 
 ### Question 1
 
@@ -16,9 +24,7 @@ editor: visual
 
 ### Question 3
 
-* The 2 advantages to using purrr functions instead of BaseR apply family are 
-
-3. What are two advantages of using purrr functions instead of the BaseR apply family?
+* The 2 advantages to using purrr functions instead of BaseR apply family are that the purrr functions can guarantee the output that you want to happen, whereas base R cannot always do that (ex: `sapply()` may not simplify, whereas `map_chr()` will guarantee a character response). In addition, more setting are added to the purrr functions (like `safely`, `quietly`, etc.) that allow for more smooth and intentional coding.f
 
 ### Question 4
 
@@ -190,8 +196,74 @@ metrics(resp, penguins)
 
 ## Task 3: Querying an API and a Tidy-Style Function
 
+For this section, you’ll connect to the news API here: newsapi.org. You’ll need to go to register for a key at
+that web site!
+
+
 ### Question 1
+
+First, we will use `GET()` to store some information from the news API into R. We will be storing information on sports that have come up from the US on 6-11-25.
+
+```{r}
+library(httr)
+library(jsonlite)
+
+key <- "423f0afd2f6e4e2682bc1aace8a276aa"
+topic <- "sports"
+url_q2 <- "https://newsapi.org/v2/everything"
+
+news_data <- GET(url_q2, query = list(
+  q = topic,
+  from = "2025-06-11",
+  sortBy = "publishedAt",
+  apiKey = key))
+```
+
 
 ### Question 2
 
+Now, we will parse what is returned to find the data frame that has the article information in it. We will also check the content and ensure that the first column is a list column.
+
+```{r}
+parsed <- fromJSON(rawToChar(news_data$content))
+article_info <- as_tibble(parsed$articles)
+tib <- as_tibble(article_info)
+tib
+str(tib$source)
+```
+
+We can see above that the data has been parsed and has the article information in it. We can also see that the first column is a list column.
+
+
 ### Question 3
+
+Lastly, we will write a function that lets the user query the API when using the function. We will make the inputs to the function be the title/subject, a time period, and an API key.
+
+```{r}
+get_news <- function(subject, start_date, key) {
+  
+  url <- "https://newsapi.org/v2/everything"
+  
+  news_info <- GET(url, query = list(
+    q = subject,
+    from = start_date,
+    sortBy = "publishedAt",
+    apiKey = key))
+  
+  parsed <- fromJSON(rawToChar(news_info$content))
+  article_info <- as_tibble(parsed$articles)
+  tib <- as_tibble(article_info)
+  
+  return(tib)
+}
+```
+
+Now, we will test this function on the gamestop title for past 6-17-2025.
+
+```{r}
+key <- "423f0afd2f6e4e2682bc1aace8a276aa"
+
+get_news("gamestop", "2025-06-17", key)
+```
+
+
